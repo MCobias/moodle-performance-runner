@@ -1,0 +1,110 @@
+###############################################
+# Configure with your own values.
+#
+# Remember to run ./before_run_setup.sh after changing
+# any of those values as everything would change and
+# previous runs would neither be valid.
+###############################################
+
+
+## Site info #################################################
+
+# All Moodle db types supported, but only 'pgsql' and 'mysqli' auto backup/restore, manual backup/restore required for other drivers, more info in before_run_setup.sh and after_run_setup.sh.
+dbtype="pgsql"
+dbhost="localhost"
+dbname="moodleperformancecomparison"
+# The user should have permissions to create and drop databases.
+dbuser="postgres"
+dbpass="yourpassword"
+dbprefix="mdl_"
+
+# As explained in README.md these tools are intended to be used in internal networks.
+wwwroot="http://yourwebserver/path/to/moodle-performance-runner/moodle"
+dataroot="/your/dataroot/directory"
+perfdataroot="/your/performancedataroot/directory"
+# Test plan files will be stored in this directory. Default is jmeter_data/moodle_testplan_data
+# Relative/absolute path to performance tool where jMeter will find the test files.
+#testplandataroot="../jmeter_data/moodle_testplan_data"
+
+## Repository and test branches information ##################
+
+# The moodle repository where the base branch is located.
+repository="git://github.com/moodle/moodle.git"
+
+# The base where both before and after branches will be updated.
+# This is necessary in case there are changes in
+# the generators codebase between before and after, we would not
+# be able to compare results as the test plan generator or the
+# generated data would change, so this setting will always be
+# pointing to a minor or major release hash.
+#
+# You don't need to change this value
+# This is Moodle 2.9 (Build: 20150511) - 2015051100.00
+basecommit="cbd90c01c120a199ca53b5965785c55f88834cdc"
+# This is Moodle 2.8 (Build: 20141110) - 2014111000.00
+# basecommit="21db825b19e84bb24c0661b551a5069970e143c4"
+# Older bases in the branch will be listed here:
+# This is Moodle 2.7dev (Build: 20131117) - 2013111800.00
+# basecommit="b58bc15af5fff22adca0285e96689614ba353931"
+# This is Moodle 2.6 (Build: 20131118) - 2013111800.00
+# basecommit="2b10fa04335aa409f7cbb6fa7cf4d2318d18fcc0"
+
+# The original branch.
+# Usually one of Moodle's weekly released branches. You can also use a git hash here.
+beforebranchrepository="git://github.com/moodle/moodle.git"
+beforebranch="master"
+
+# The branch to compare against.
+# Usually your development branch or the same $beforebranch value if
+# you are comparing different settings configurations. You can also use a git hash here.
+afterbranchrepository="git://github.com/moodle/moodle.git"
+afterbranch="master"
+
+
+## Others ####################################################
+
+# The database and dataroot backups will be stored here.
+# Note that this can grow a lot depending on the test sizes you use.
+backupsdir="/your/directory/with/a/lot/of/free/space"
+
+# Services names to restart before each run.
+# Note that this will only work in a limited set of systems as it uses system calls like "service $servicename restart"
+# You will need to restart the involved services manually.
+#
+# Default value set in defaults.properties
+#
+#servicesarray=( apache2 mysql postgresql )
+
+# Path or alias of the browser you want to open the results with.
+# This setting is only useful when running compare.sh script.
+#
+# Default value set in defaults.properties
+#
+#browser="firefox"
+
+# Path or alias of the browser mob proxy and selenium
+# This is needed while creating testplan.
+#seleniumjarpath='PATH_TO_SELENIUM/selenium_server.jar'
+#browsermobproxypath='/PATH_TO_browsermob-proxy-xxx/bin/browsermob-proxy'
+
+# Allows you to overwrite the default commands.
+# Useful if you have multiple instances, if your
+# commands are not in $PATH...
+#
+# Default values set in defaults.properties
+#
+#phpcmd='php'
+#mysqlcmd='mysql'
+#pgsqlcmd='psql'
+#mysqldumpcmd='mysqldump'
+#pgsqldumpcmd='pg_dump'
+#gitcmd='git'
+#curlcmd='curl'
+
+# Allows you to change the size used by compare.sh
+# Note that using a XS size may lead to unstable results
+# as there is moodle code that only runs only certain
+# timing conditions; this is balanced leading to stable
+# results using a S size or higher.
+#defaultcomparesitesize=S
+#defaultcomparetestplansize=S

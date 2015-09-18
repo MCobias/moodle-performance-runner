@@ -1,0 +1,60 @@
+<?php  // Moodle configuration file
+
+unset($CFG);
+global $CFG;
+$CFG = new stdClass();
+
+$CFG->dbtype    = '%%dbtype%%';
+$CFG->dblibrary = 'native';
+$CFG->dbhost    = '%%dbhost%%';
+$CFG->dbname    = '%%dbname%%';
+$CFG->dbuser    = '%%dbuser%%';
+$CFG->dbpass    = '%%dbpass%%';
+$CFG->prefix    = '%%dbprefix%%';
+$CFG->dboptions = array (
+  'dbpersist' => 0,
+  'dbsocket' => 0,
+);
+
+$CFG->wwwroot   = '%%wwwroot%%';
+$CFG->dataroot  = '%%dataroot%%';
+$CFG->performance_dataroot = '%%perfdataroot%%';
+$CFG->testplanfiles_dataroot ='%%testplandataroot%%';
+$CFG->admin     = 'admin';
+
+// No debug! it changes db reads and db writes values.
+$CFG->debug = false;
+$CFG->debugdisplay = false;
+
+// No cache_text to have results as stable as possible.
+$CFG->cachetext = 0;
+
+// Using file sessions.
+$CFG->dbsessions = false;
+
+if (!defined('CLI_SCRIPT')) {
+    define('MDL_PERF_TEST', true);
+    define('MDL_PERF', true);
+    define('MDL_PERFDB', true);
+    define('MDL_PERFTOLOG', true);
+    define('MDL_PERFTOFOOT', true);
+}
+
+$CFG->directorypermissions = 0777;
+
+// Time between threads accesses are randomly generated so we can
+// not have stable results with the core LASTACCESS_UPDATE_SECS value.
+// Moodle will try to define it again, the php error will be hidden with
+// debug mode disabled. https://tracker.moodle.org/browse/MDL-41910
+define('LASTACCESS_UPDATE_SECS', 9999999999);
+
+// Few options which will ensure we get consistent results.
+$CFG->dboptions['dbpersist'] =  1; // Persistent connection
+$CFG->dboptions =  array ('dbpersist' =>1); // Persistent connection
+$CFG->sessiontimeout = 9999999999; // Don’t update session.
+$CFG->session_update_timemodified_frequency = 9999999999;
+
+require_once(dirname(__FILE__) . '/lib/setup.php');
+
+// There is no php closing tag in this file,
+// it is intentional because it prevents trailing whitespace problems!

@@ -1,0 +1,27 @@
+{
+    "name": "moodlehq/performance-runner",
+    "description": "Moodle performance runner, runs jmeter testplan and log performance data",
+    "keywords": ["Moodle", "performance", "JMeter"],
+    "type": "library",
+    "authors": [
+        {
+            "name": "Rajesh Taneja",
+            "email": "rajesh@moodle.com",
+            "role": "Test automation developer"
+        }
+    ],
+    "repositories" : [
+        {
+            "type": "vcs",
+            "url": "https://github.com/rajeshtaneja/moodle-behat-generator"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/rajeshtaneja/moodle-behat-2jmx"
+        }
+    ],
+    "require-dev": {
+        "moodlehq/behat-generator": "dev-master",
+        "moodlehq/behat-2jmx": "dev-master"
+    }
+}

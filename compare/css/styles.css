@@ -1,0 +1,47 @@
+body {
+    font-family: 'Arial';
+    font-size: 14px;
+    margin: 20px;
+}
+
+table {
+    border-style: solid;
+}
+
+h2 {
+    text-align: center;
+}
+
+.section {
+    margin-top: 30px;
+}
+
+.centeredcontainer {
+    border-style: solid;
+    margin: 50px 200px;
+    padding: 5px;
+    text-align: center;
+}
+
+.decrease {
+    color: green;
+}
+
+.error {
+    font-size: 20px;
+}
+
+.error, .increment {
+    color: red;
+}
+
+.switchtool {
+    margin-top: 40px;
+    margin-bottom: 50px;
+    text-align: center;
+    font-size: 22px;
+}
+
+table.container {
+    margin: 0 auto;
+}
