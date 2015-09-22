@@ -24,17 +24,10 @@ CURRENT_PLAN_PROP_FILE=${CURRENT_FILE_DIRECTORY}'/../jmeter_data/moodle_testplan
 . ${CURRENT_FILE_DIRECTORY}'/../lib/lib.sh'
 . ${CURRENT_FILE_DIRECTORY}'/../lib/run_lib.sh'
 
-# We need the paths.
-if [ ! -z "$1" ]; then
-    output="Usage: `basename $0`
-
-Prepares the next test run after finished running the before_run_setup.sh script.
-* Restores database
-* Restores dataroot
-* Upgrades moodle if necessary
-"
-    echo "$output" >&2
-    exit 1
+# Check if commit is passed.
+after_run_usage
+if [[ -n "$aftercommitpassed" ]]; then
+    afterbranch=$aftercommitpassed
 fi
 
 # Checking as much as we can that before_run_setup.sh was

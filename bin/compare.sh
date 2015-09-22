@@ -30,18 +30,34 @@ groupname="compare_"`date '+%Y%m%d%H%M'`
 $CURRENT_DIRECTORY/before_run_setup.sh -s $defaultcomparesitesize -t $defaultcomparetestplansize || \
     throw_error "Before run setup didn't finish as expected"
 
+$CURRENT_DIRECTORY/restart_services.sh
 $CURRENT_DIRECTORY/test_runner.sh -n "$groupname" -d "before" || \
     throw_error "The before test run didn't finish as expected"
 
 # We don't restart the browser here, this is a development machine
 # and probably you are not staring at the CLI waiting for it to
 # finish.
+if [[ "$(declare -p afterbranch)" =~ "declare -a" ]]; then
+    for commit in ${afterbranch[@]}; do
 
-$CURRENT_DIRECTORY/after_run_setup.sh || \
-    throw_error "After run setup didn't finish as expected"
+        $CURRENT_DIRECTORY/after_run_setup.sh -c ${commit} || \
+            throw_error "After run setup didn't finish as expected"
 
-$CURRENT_DIRECTORY/test_runner.sh -n "$groupname" -d "after" || \
-    throw_error "The after test run didn't finish as expected"
+        $CURRENT_DIRECTORY/restart_services.sh
+
+        $CURRENT_DIRECTORY/test_runner.sh -n "$groupname" -d "after" || \
+            throw_error "The after test run didn't finish as expected"
+
+    done
+else
+    $CURRENT_DIRECTORY/after_run_setup.sh || \
+        throw_error "After run setup didn't finish as expected"
+
+    $CURRENT_DIRECTORY/restart_services.sh
+
+    $CURRENT_DIRECTORY/test_runner.sh -n "$groupname" -d "after" || \
+        throw_error "The after test run didn't finish as expected"
+fi
 
 timeend=`date +%s`
 

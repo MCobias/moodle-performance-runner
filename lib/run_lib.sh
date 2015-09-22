@@ -63,6 +63,46 @@ function check_before_run_cmd() {
 }
 
 ################################################
+# Show usage of before run command.
+#
+################################################
+function after_run_usage() {
+    cat << EOF
+############################## Usage ###############################################
+#                                                                                  #
+# Prepares the next test run after finished running the before_run_setup.sh script.#
+# Restores database                                                                #
+# Restores dataroot                                                                #
+# Upgrades moodle if necessary                                                     #
+#                                                                                  #
+# Usage: ./after_run_setup.sh -c commit                                            #
+#   -c : (optional)Commit with which after run should run                          #
+#   -h : Help                                                                      #
+#                                                                                  #
+####################################################################################
+EOF
+    exit 1
+}
+
+################################################
+# Check if all params are passed prorerly.
+# - expects -s and -t to be set.
+#
+################################################
+function check_after_run_cmd() {
+    # Default is no verbose.
+    VERBOSE=0
+
+    while getopts 'h:c' flag; do
+      case "${flag}" in
+        h) after_run_usage ;;
+        c) aftercommitpassed=$OPTARG ;;
+        ?) after_run_usage ;;
+      esac
+    done
+}
+
+################################################
 # Downloads composer dependencies.
 ################################################
 download_composer_dependencies() {
