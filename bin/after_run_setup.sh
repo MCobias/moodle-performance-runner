@@ -26,8 +26,8 @@ CURRENT_PLAN_PROP_FILE=${CURRENT_FILE_DIRECTORY}'/../jmeter_data/moodle_testplan
 
 # Check if commit is passed.
 after_run_usage
-if [[ -n "$aftercommitpassed" ]]; then
-    afterbranch=$aftercommitpassed
+if [[ -n "$afterbranchpassed" ]]; then
+    afterbranch=$afterbranchpassed
 fi
 
 # Checking as much as we can that before_run_setup.sh was

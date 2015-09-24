@@ -76,7 +76,7 @@ function after_run_usage() {
 # Upgrades moodle if necessary                                                     #
 #                                                                                  #
 # Usage: ./after_run_setup.sh -c commit                                            #
-#   -c : (optional)Commit with which after run should run                          #
+#   -b : (optional)Branch with which after run should run                          #
 #   -h : Help                                                                      #
 #                                                                                  #
 ####################################################################################
@@ -93,10 +93,10 @@ function check_after_run_cmd() {
     # Default is no verbose.
     VERBOSE=0
 
-    while getopts 'h:c' flag; do
+    while getopts 'h:b' flag; do
       case "${flag}" in
         h) after_run_usage ;;
-        c) aftercommitpassed=$OPTARG ;;
+        b) afterbranchpassed=$OPTARG ;;
         ?) after_run_usage ;;
       esac
     done
@@ -428,10 +428,10 @@ function generate_testplan {
 
         moodle_print "Generating testplan for ${basecommit}, size ${TESTPLANSIZE}"
         if [[ "$VERBOSE" == "0" ]]; then
-            vendor/bin/moodle_behat_2jmx -t=${TESTPLANSIZE} --proxyurl localhost:9090 --proxyport 8081 --force --moodlepath=${PERFORMANCE_TOOL_DIRECTORY}'/moodle' --datapath=${perfdataroot} > /dev/null 2>&1 || \
+            vendor/bin/moodle_behat_2jmx --testplan ${TESTPLANSIZE} --proxyurl localhost:9090 --proxyport 8081 --force --moodlepath=${PERFORMANCE_TOOL_DIRECTORY}'/moodle' --datapath=${perfdataroot} > /dev/null 2>&1 || \
                 exit 1
         else
-            vendor/bin/moodle_behat_2jmx -t=${TESTPLANSIZE} --proxyurl localhost:9090 --proxyport 8081 --force --moodlepath=${PERFORMANCE_TOOL_DIRECTORY}'/moodle' --datapath=${perfdataroot} || \
+            vendor/bin/moodle_behat_2jmx --testplan ${TESTPLANSIZE} --proxyurl localhost:9090 --proxyport 8081 --force --moodlepath=${PERFORMANCE_TOOL_DIRECTORY}'/moodle' --datapath=${perfdataroot} || \
                 exit 1
         fi
 

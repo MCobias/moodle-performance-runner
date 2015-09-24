@@ -27,7 +27,7 @@ $PREFIX = array(
 );
 $PROPERTIES = array_keys($PREFIX);
 
-$BASEDIR = __DIR__ . '/../'; //'/var/www/localhost/jmeter';
+$BASEDIR = __DIR__ . '/../jmeter_data';
 
 class page {
 
@@ -385,6 +385,10 @@ function get_runs($dir = null) {
             if (preg_match("/group = '([^']+)'/", $start, $matches)) {
                 $group = $matches[1];
             }
+            $threadgroupname = "Unknown threadgroupname";
+            if (preg_match("/threadgroupname = '([^']+)'/", $start, $matches)) {
+                $threadgroupname = $matches[1] . ' threadgroupname';
+            }
             $loopcount = "Unknown";
             if (preg_match("/loopcount = '(\d+)'/", $start, $matches)) {
                 $loopcount = $matches[1];
@@ -432,14 +436,15 @@ function get_runs($dir = null) {
                 'siteversion' => $siteversion,
                 'sitebranch' => $sitebranch,
                 'sitecommit' => $sitecommit,
-                'size' => $size
+                'size' => $size,
+                'threadgroupname' => $threadgroupname
             );
         }
     }
     return $runs;
 }
 
-function display_run_selector(array $runs, $before=null, $after=null, array $params = array(), $organiseby = 'filesincluded', $mostcommononly = false) {
+function display_run_selector(array $runs, $before=null, $after=null, $threadgroupname=null, array $params = array(), $organiseby = 'filesincluded', $mostcommononly = false) {
     echo "<div class='runselector'>";
     echo "<form method='get' action=''>";
     foreach ($params as $key => $value) {
@@ -452,7 +457,7 @@ function display_run_selector(array $runs, $before=null, $after=null, array $par
         if ($before == $date) {
             $selected = ' selected="selected"';
         }
-        echo "<option$selected value='$date'>$run[desc] - $run[group], $run[size], Moodle $run[sitebranch] ($run[siteversion], $run[sitecommit]) ($run[users] users * $run[loopcount] loop, rampup=$run[rampup] throughput=$run[throughput]) $run[time]</option>";
+        echo "<option$selected value='$date'>$run[desc] - $run[group] - $run[threadgroupname], $run[size], Moodle $run[sitebranch] ($run[siteversion], $run[sitecommit]) ($run[users] users * $run[loopcount] loop, rampup=$run[rampup] throughput=$run[throughput]) $run[time]</option>";
     }
     echo "</select>";
     echo "<br/><br/>";
@@ -463,7 +468,7 @@ function display_run_selector(array $runs, $before=null, $after=null, array $par
         if ($after == $date) {
             $selected = ' selected="selected"';
         }
-        echo "<option$selected value='$date'>$run[desc] - $run[group], $run[size], Moodle $run[sitebranch] ($run[siteversion], $run[sitecommit]) ($run[users] users * $run[loopcount] loop, rampup=$run[rampup] throughput=$run[throughput]) $run[time]</option>";
+        echo "<option$selected value='$date'>$run[desc] - $run[group] - $run[threadgroupname], $run[size], Moodle $run[sitebranch] ($run[siteversion], $run[sitecommit]) ($run[users] users * $run[loopcount] loop, rampup=$run[rampup] throughput=$run[throughput]) $run[time]</option>";
     }
     echo "</select>";
     echo "<hr />";
@@ -714,12 +719,12 @@ function get_font() {
     return $BASEDIR.'/compare/css/DejaVuSans.ttf';
 }
 
-function build_pages_array(array $runs, $before, $after) {
+function build_pages_array(array $runs, $before, $after, $threadgroupname) {
     global $PROPERTIES;
 
     $pages = array();
     $results = array();
-    $combined = array('before' => array(), 'after' => array());
+    $combined = array('before' => array(), 'after' => array(), 'threadgroupname' => array());
     foreach ($PROPERTIES as $PROPERTY) {
         $combined['before'][$PROPERTY] = array();
         $combined['after'][$PROPERTY] = array();

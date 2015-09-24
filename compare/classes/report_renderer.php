@@ -40,7 +40,8 @@ class report_renderer {
         // Link to Sam's tool with detailed data (just the first 2 runs).
         if (!empty($_GET['timestamps']) && count($_GET['timestamps']) >= 2) {
             $urlparams = 'before=' . $_GET['timestamps'][1] . '&after=' . $_GET['timestamps'][0];
-            echo '<div class="switchtool"><a href="details.php?' . $urlparams . '" target="_blank">See numeric info</a></div>';
+            $urlparams .= '&threadgroupname=' . $_GET['threadgroupname'];
+            echo '<div class="switchtool"><a href="compare/details.php?' . $urlparams . '" target="_blank">See numeric info</a></div>';
         }
 
 
@@ -189,13 +190,13 @@ class report_renderer {
             $filenamestr = 'filename=' . $run->get_filename(false);
 
             // Link to download the run.
-            $runinfo->downloadlink = '<a href="download_run.php?' . $filenamestr . '">Download</a>';
+            $runinfo->downloadlink = '<a href="compare/download_run.php?' . $filenamestr . '">Download</a>';
 
             // Only if the web is read/write.
             if (empty($properties['readonlyweb'])) {
                 // Link to delete the run.
                 $returnurlstr = 'returnurl=' . urlencode('timestamps[]=' . implode('&timestamps[]=', $_GET['timestamps']));
-                $runinfo->deletelink = '<a href="delete_run.php?' . $filenamestr . '&' . $returnurlstr . '" class="delete-run">Delete</a>';
+                $runinfo->deletelink = '<a href="compare/delete_run.php?' . $filenamestr . '&' . $returnurlstr . '" class="delete-run">Delete</a>';
             }
 
             $runsinfo[] = $this->get_info_container($runinfo);

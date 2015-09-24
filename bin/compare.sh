@@ -38,15 +38,18 @@ $CURRENT_DIRECTORY/test_runner.sh -n "$groupname" -d "before" || \
 # and probably you are not staring at the CLI waiting for it to
 # finish.
 if [[ "$(declare -p afterbranch)" =~ "declare -a" ]]; then
-    for commit in ${afterbranch[@]}; do
+    # Loop through all the after branches.
+    COUNTER=0
+    for branch in ${afterbranch[@]}; do
 
-        $CURRENT_DIRECTORY/after_run_setup.sh -c ${commit} || \
+        $CURRENT_DIRECTORY/after_run_setup.sh -c ${branch} || \
             throw_error "After run setup didn't finish as expected"
 
         $CURRENT_DIRECTORY/restart_services.sh
 
-        $CURRENT_DIRECTORY/test_runner.sh -n "$groupname" -d "after" || \
+        $CURRENT_DIRECTORY/test_runner.sh -n "$groupname" -d "after ${COUNTER}" || \
             throw_error "The after test run didn't finish as expected"
+        COUNTER+=1
 
     done
 else
